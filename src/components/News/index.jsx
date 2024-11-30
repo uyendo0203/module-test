@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
@@ -8,79 +8,43 @@ import EventItem from "./eventItem";
 function DynamicSlides() {
     const settings = {
         dots: true,
-        arrows:false,
+        arrows: false,
         infinite: false,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        autoplay: true
     };
     const settings2 = {
-        className: "center",
+        className: "settings2",
         slidesToShow: 3,
         slidesToScroll: 1,
         centerMode: true,
         arrows: true,
         dots: true,
         speed: 300,
-        // centerPadding: '40px',
+        centerPadding: '40px',
         infinite: true,
         autoplaySpeed: 5000,
-        // autoplay: true
+        autoplay: true,
         responsive: [{
-            breakpoint: 767,
+            breakpoint: 500,
             settings: {
                 slidesToShow: 1,
+                centerPadding: '80px',
             }
         }]
     };
 
-    const settings0 = {
-        className: "center",
-        centerMode: true,
-        infinite: true,
-        centerPadding: "60px",
-        slidesToShow: 3,
-        speed: 500
-      };
-
-    const temp1 = [
-        { "id": 1, "name": "Item 1", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 2, "name": "Item 2", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 3, "name": "Item 3", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 4, "name": "Item 4", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 5, "name": "Item 5", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 6, "name": "Item 6", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 7, "name": "Item 7", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-    ]
-    const temp2 = [
-        { "id": 8, "name": "Item 1", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 9, "name": "Item 2", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 10, "name": "Item 3", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-    ]
-
-    const temp3 = [
-        { "id": 1, "name": "Item 1", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 2, "name": "Item 2", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 3, "name": "Item 3", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 4, "name": "Item 4", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-    ]
-    const temp4 = [
-        { "id": 1, "name": "Item 1", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-        { "id": 2, "name": "Item 2", "image": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" },
-    ]
-
     const [isCheckedA, setIsCheckedA] = useState(true);
     const [isCheckedB, setIsCheckedB] = useState(true);
-    const [arrA, setArrA] = useState(temp1);
-    const [arrB, setArrB] = useState(temp2);
-
-
     const [isCheckedC, setIsCheckedC] = useState(true);
     const [isCheckedD, setIsCheckedD] = useState(true);
-    const [arrC, setArrC] = useState(temp3);
-    const [arrD, setArrD] = useState(temp4);
 
-    const ismobile = window.innerWidth < 768 ? 3 : 6
+    const [arrA, setArrA] = useState([]);
+    const [arrB, setArrB] = useState([]);
+    const [arrC, setArrC] = useState([]);
+    const [arrD, setArrD] = useState([]);
 
 
     const handleCheckboxAChange = () => {
@@ -99,22 +63,23 @@ function DynamicSlides() {
         setIsCheckedD(!isCheckedD);
     };
 
+    const ismobile = window.innerWidth < 768 ? 3 : 6
+
     const chunk = (arr, size) =>
         Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
             arr.slice(i * size, i * size + size)
         );
 
     const getDisplayedArrayAB = () => {
+        let mergedArray = []
         if (isCheckedA && isCheckedB) {
-            const temp = [...arrA, ...arrB]
-            const x = temp.length > ismobile ? chunk(temp, ismobile) : temp
-            return x;
+            mergedArray = [...arrA, ...arrB]
         } else if (isCheckedA) {
-            return arrA.length > ismobile ? chunk(arrA, ismobile) : arrA;
+            mergedArray = [...arrA]
         } else if (isCheckedB) {
-            return arrB.length > ismobile ? chunk(arrB, ismobile) : arrB;
+            mergedArray = [...arrB]
         }
-        return [];
+        return mergedArray.length > ismobile ? chunk(mergedArray, ismobile) : [mergedArray]
     };
 
     const getDisplayedArrayCD = () => {
@@ -130,39 +95,56 @@ function DynamicSlides() {
 
     const displayedArrayAB = getDisplayedArrayAB();
     const displayedArrayCD = getDisplayedArrayCD();
-    console.log({ displayedArrayAB, displayedArrayCD });
+    
 
+    const itemRef1 = useRef()
+    const itemRef2 = useRef()
+    const itemRef3 = useRef()
+    const itemRef4 = useRef()
+    const itemRef5 = useRef()
+    const itemRef6 = useRef()
+    const itemRef7 = useRef()
 
     useEffect(() => {
-        const items1Array = document.querySelector('#items1').defaultValue
-        const items2Array = document.querySelector('#items1').defaultValue
+        const xarrayA = parseDataFromInput('#items1')
+        const xarrayB = parseDataFromInput("#items2")
+        const xarrayC = parseDataFromInput("#items3")
+        const xarrayD = parseDataFromInput("#items4")
 
-        console.log({items1Array});
-        
-        setArrA(JSON.parse(items1Array) )
-        setArrB(JSON.parse(items2Array))
+        setArrA(xarrayA)
+        setArrB(xarrayB)
+        setArrC(xarrayC)
+        setArrD(xarrayD)
     }, [])
 
-    useEffect(() => {
-        if (arrA) {
-            console.log(arrA);
-        }
-    }, [arrA])
 
+    // console.log("arrA", arrA)
+    // console.log("arrB", arrB)
+    // console.log("merge", displayedArrayAB)
+    // console.log("arrC", arrC)
+    // console.log("arrD", arrD)
+    // console.log("merge", displayedArrayCD)
+
+    const parseDataFromInput = (id) => {
+        try {
+            if (document.querySelector(id)) return JSON.parse(document.querySelector(id).value)
+        } catch (error) {
+            return []
+        }
+    }
 
     return (
 
         <>
-            {/* <input type="hidden" defaultValue='[{"id":1,"name":"Item 1","image":"https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg"}]' id="items1" title="session1 tin dự án" /> */}
-            <input type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items1" title='session1 tin dự án' />
-            <input type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items2" title='session1 tin báo trí' />
-            <input type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items3" title='session2 tin dự án' />
-            <input type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items4" title='session2 ảnh tiến độ' />
-            <input type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items5" title='session3 tài liệu bán hàng' />
-            <input type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items6" title='session3 pháp lý' />
-            <input type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items7" title='session3 chính sách bán hàng' />
+            <input ref={itemRef1} type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items1" title='session1 tin dự án' />
+            <input ref={itemRef2} type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items2" title='session1 tin báo trí' />
+            <input ref={itemRef3} type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items3" title='session2 tin dự án' />
+            <input ref={itemRef4} type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items4" title='session2 ảnh tiến độ' />
+            <input ref={itemRef5} type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items5" title='session3 tài liệu bán hàng' />
+            <input ref={itemRef6} type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items6" title='session3 pháp lý' />
+            <input ref={itemRef7} type="hidden" value='[{"id":1,"name":"Item 1","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":2,"name":"Item 2","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":3,"name":"Item 3","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":4,"name":"Item 4","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"},{"id":5,"name":"Item 5","image":"https:\/\/www.elle.vn\/app\/uploads\/2017\/07\/25\/hinh-anh-dep-1.jpg","link":"http:\/\/dev.caraworld.vn","date":"20\/11\/2024"}]' id="items7" title='session3 chính sách bán hàng' />
 
-            <div className="section-top section-theodong-sukien dabuild">
+            <div className="section-top section-theodong-sukien">
                 <div className="heading">
                     <div className="section-text">
                         <h2 className="text-hidden">Theo dòng sự kiện</h2>
@@ -178,7 +160,7 @@ function DynamicSlides() {
                             </span>
                             <span className="checkbox-text">TIN DỰ ÁN</span>
                         </label>
-                        <label className="checkbox-label" htmlFor="checkbox-2">
+                        <label data={isCheckedB ? "checked" : "unchecked"} className="checkbox-label" htmlFor="checkbox-2">
                             <span>
                                 <input className="checkbox-input" checked={isCheckedB} onChange={handleCheckboxBChange} type="checkbox" id="checkbox-2" />
                                 <span className="checkbox-icon-wrapper">
@@ -200,32 +182,32 @@ function DynamicSlides() {
                                                 <div className="big">
                                                     {
                                                         slide.length > 0 &&
-                                                        <EventItem key={Math.random(index)} name={slide[0]?.name} image={slide[0]?.image} />
+                                                        <EventItem key={Math.random(index)} name={slide[0]?.name} image={slide[0]?.image} link={slide[0]?.link} date={slide[0]?.date} />
                                                     }
                                                 </div>
                                                 <div className="right">
                                                     {
                                                         slide.length > 1 &&
-                                                        <EventItem key={Math.random(index)} name={slide[1]?.name} image={slide[1]?.image} />
+                                                        <EventItem key={Math.random(index)} name={slide[1]?.name} image={slide[1]?.image} link={slide[1]?.link} date={slide[1]?.date} />
                                                     }
                                                     {
                                                         slide.length > 2 &&
-                                                        <EventItem key={Math.random(index)} name={slide[2]?.name} image={slide[2]?.image} />
+                                                        <EventItem key={Math.random(index)} name={slide[2]?.name} image={slide[2]?.image} link={slide[2]?.link} date={slide[2]?.date} />
                                                     }
                                                 </div>
                                             </div>
                                             <div className="bottom">
                                                 {
                                                     slide.length > 3 &&
-                                                    <EventItem key={Math.random(index)} name={slide[3]?.name} image={slide[3]?.image} />
+                                                    <EventItem key={Math.random(index)} name={slide[3]?.name} image={slide[3]?.image} link={slide[3]?.link} date={slide[3]?.date} />
                                                 }
                                                 {
                                                     slide.length > 4 &&
-                                                    <EventItem key={Math.random(index)} name={slide[4]?.name} image={slide[4]?.image} />
+                                                    <EventItem key={Math.random(index)} name={slide[4]?.name} image={slide[4]?.image} link={slide[4]?.link} date={slide[4]?.date} />
                                                 }
                                                 {
                                                     slide.length > 5 &&
-                                                    <EventItem key={Math.random(index)} name={slide[5]?.name} image={slide[5]?.image} />
+                                                    <EventItem key={Math.random(index)} name={slide[5]?.name} image={slide[5]?.image} link={slide[5]?.link} date={slide[5]?.date} />
                                                 }
                                             </div>
                                         </div>
@@ -234,7 +216,7 @@ function DynamicSlides() {
                             </Slider>
                         </div>
                     </div>
-                    <div className="mobile">
+                    <div className="mobile" >
                         <Slider {...settings}>
                             {displayedArrayAB.map((slide, index) => {
                                 return (
@@ -243,17 +225,17 @@ function DynamicSlides() {
                                             <div className="top">
                                                 {
                                                     slide.length > 0 &&
-                                                    <EventItem key={Math.random(index)} name={slide[0]?.name} image={slide[0]?.image} />
+                                                    <EventItem key={Math.random(index)} name={slide[0]?.name} image={slide[0]?.image} link={slide[0]?.link} date={slide[0]?.date} />
                                                 }
                                             </div>
                                             <div className="bottom">
                                                 {
                                                     slide.length > 1 &&
-                                                    <EventItem key={Math.random(index)} name={slide[1]?.name} image={slide[1]?.image} />
+                                                    <EventItem key={Math.random(index)} name={slide[1]?.name} image={slide[1]?.image} link={slide[1]?.link} date={slide[1]?.date} />
                                                 }
                                                 {
                                                     slide.length > 2 &&
-                                                    <EventItem key={Math.random(index)} name={slide[2]?.name} image={slide[2]?.image} />
+                                                    <EventItem key={Math.random(index)} name={slide[2]?.name} image={slide[2]?.image} link={slide[2]?.link} date={slide[2]?.date} />
                                                 }
                                             </div>
                                         </div>
@@ -264,7 +246,7 @@ function DynamicSlides() {
                     </div>
                 </div>
             </div>
-            <div className="section-top section-sukien-tiendo">
+            <div className="section-top section-sukien-tiendo" >
                 <div className="heading">
                     <div className="section-text">
                         <h2 className="text-hidden">Sự kiện và tiến độ</h2>
@@ -293,50 +275,16 @@ function DynamicSlides() {
                 </div>
                 <div className="container">
                     <div className="center-slider-wrap">
-
-                        <div className="center-slider">
-                            {/* <Slider {...settings2}>
+                        <div className="slider-center-mode">
+                            <Slider {...settings2}>
                                 {displayedArrayCD.map((slide, index) => {
                                     return (
-                                            <img key={index} src={slide.image} alt="true" />
+                                        <img key={index} src={slide.image} alt="true" />
                                     )
                                 })}
-                            </Slider> */}
-                            <div className="slider-container">
-     
-    </div>
-                        </div>
-                        <div className="arrows">
-                            <div className="slidenext slidearrow">
-                                <img src="./images/news/slider-arrow-right.svg" alt="bg" />
-                            </div>
-                            <div className="slideprev slidearrow">
-                                <img src="./images/news/slider-arrow-left.svg" alt="bg" />
-                            </div>
+                            </Slider>
                         </div>
                     </div>
-                </div>
-                <div className="container">
-                <Slider {...settings0}>
-                    <div>
-                    <h3>1</h3>
-                    </div>
-                    <div>
-                    <h3>2</h3>
-                    </div>
-                    <div>
-                    <h3>3</h3>
-                    </div>
-                    <div>
-                    <h3>4</h3>
-                    </div>
-                    <div>
-                    <h3>5</h3>
-                    </div>
-                    <div>
-                    <h3>6</h3>
-                    </div>
-                </Slider>
                 </div>
             </div>
         </>
