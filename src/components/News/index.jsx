@@ -110,11 +110,30 @@ function DynamicSlides() {
 
     const handleCheckboxCChange = () => {
         setIsCheckedC(!isCheckedC);
+        setstyleBgs("0% 100%")
+        setSliderTargetValue({
+            ...sliderTargetValue,
+            value:0
+        })
+        setSlideIndex(0)
+
     };
 
     const handleCheckboxDChange = () => {
         setIsCheckedD(!isCheckedD);
+        setstyleBgs("0% 100%")
+        setSliderTargetValue({
+            ...sliderTargetValue,
+            value:0
+        })
+        setSlideIndex(0)
+
     };
+
+    useEffect(()=>{
+        console.log({sliderTargetValue});
+        
+    },[sliderTargetValue])
 
     const ismobile = window.innerWidth < 768 ? 3 : 6
 
@@ -176,14 +195,6 @@ function DynamicSlides() {
         })
 
     }, [])
-
-
-    // console.log("arrA", arrA)
-    // console.log("arrB", arrB)
-    // console.log("merge", displayedArrayAB)
-    // console.log("arrC", arrC)
-    // console.log("arrD", arrD)
-    // console.log("merge", displayedArrayCD)
 
     const parseDataFromInput = (id) => {
         try {
@@ -326,7 +337,7 @@ function DynamicSlides() {
                                     <i className="checkbox-icon" />
                                 </span>
                             </span>
-                            <span className="checkbox-text">TIN DỰ ÁN</span>
+                            <span className="checkbox-text">{isCheckedC ? "checked" : "unchecked"} TIN DỰ ÁN</span>
                         </label>
                         <label className="checkbox-label" htmlFor="checkbox-4">
                             <span>
@@ -335,17 +346,15 @@ function DynamicSlides() {
                                     <i className="checkbox-icon" />
                                 </span>
                             </span>
-                            <span className="checkbox-text">TIN BÁO CHÍ</span>
+                            <span className="checkbox-text">{isCheckedD ? "checked" : "unchecked"} TIN BÁO CHÍ</span>
                         </label>
                     </div>
                 </div>
-                <div className="container"  data-aos="fade-up" data-aos-duration="1500" data-delay="2000">
+                <div className="container" data-aos="fade-up" data-aos-duration="1500" data-delay="2000">
                     <div className="center-slider-wrap">
                         <div className="slider-center-mode">
                             <Slider
-                                ref={slider => {
-                                    sliderRef = slider;
-                                }}
+                                ref={slider => { sliderRef = slider }}
                                 {...settings2}>
                                 {displayedArrayCD.map((slide, index) => {
                                     return (
@@ -354,7 +363,7 @@ function DynamicSlides() {
                                 })}
                             </Slider>
                             <div className="slider-center-mode-range">
-                                {/* <p>Total updates: {updateCount} </p> */}
+                                <p>Total updates: {displayedArrayCD.length - 1} </p>
                                 <input
                                     onChange={e => sliderRangeChange(e)}
                                     value={slideIndex}
