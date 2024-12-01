@@ -5,7 +5,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import EventItem from "./eventItem";
 
+import AOS from 'aos';
+
+
 function DynamicSlides() {
+
+    AOS.init();
+
 
     const [slideIndex, setSlideIndex] = useState(0);
     const [updateCount, setUpdateCount] = useState(0);
@@ -205,10 +211,10 @@ function DynamicSlides() {
             }
 
             <div className="section-top section-theodong-sukien">
-                <div className="heading">
+                <div className="heading" data-aos="fade-up" data-aos-duration="1000">
                     <div className="section-text">
                         <h2 className="text-hidden">Theo dòng sự kiện</h2>
-                        <img src="./images/news/theo-dong-su-kien.png" alt="Theo dòng sự kiện" />
+                        <img src={process.env.NODE_ENV === 'development' ? "http://dev.caraworld.vn/assets/index/images/news/theo-dong-su-kien.png" : "/assets/index/images/news/theo-dong-su-kien.png"} alt="Theo dòng sự kiện" />
                     </div>
                     <div className="checkbox_heading">
                         <label className="checkbox-label" htmlFor="checkbox-1">
@@ -231,7 +237,7 @@ function DynamicSlides() {
                         </label>
                     </div>
                 </div>
-                <div className="container">
+                <div className="container" data-aos="fade-up" data-aos-duration="1500" data-delay="2000">
                     <div className="desktop">
                         <div className="events-sliders active ">
                             <Slider {...settings}>
@@ -307,10 +313,10 @@ function DynamicSlides() {
                 </div>
             </div>
             <div className="section-top section-sukien-tiendo" >
-                <div className="heading">
+                <div className="heading" data-aos="fade-up" data-aos-duration="1000">
                     <div className="section-text">
                         <h2 className="text-hidden">Sự kiện và tiến độ</h2>
-                        <img src="./images/news/su-kien-va-tien-do.png" alt="Sự kiện và tiến độ" />
+                        <img src={process.env.NODE_ENV === 'development' ? "http://dev.caraworld.vn/assets/index/images/news/su-kien-va-tien-do.png" : "/assets/index/images/news/su-kien-va-tien-do.png"} alt="Sự kiện và tiến độ" />
                     </div>
                     <div className="checkbox_heading">
                         <label className="checkbox-label" htmlFor="checkbox-3">
@@ -333,7 +339,7 @@ function DynamicSlides() {
                         </label>
                     </div>
                 </div>
-                <div className="container">
+                <div className="container"  data-aos="fade-up" data-aos-duration="1500" data-delay="2000">
                     <div className="center-slider-wrap">
                         <div className="slider-center-mode">
                             <Slider
