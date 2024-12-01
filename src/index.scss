@@ -1,5 +1,7 @@
 // ko xoa 
-
+html,body{
+  background-color: #00fff4;
+}
 .section-sukien-tiendo {
   top: 102% !important;
   background-color: #406c80;
@@ -8,97 +10,6 @@
 .events-image::before {
   background-image: url(http://dev.caraworld.vn/assets/index/images/noneed/slider-su-kien-shadow.png);
 }
-
-
-// pass to scss 
-// .slider-center-mode {
-//   position: relative;
-//   .slick-dots {
-//     display: none !important;
-//   }
-// }
-// .slider-center-mode-range {
-//   position: absolute;
-//   bottom: -55px;
-//   z-index: 1;
-//   width: 100%;
-
-//   &::before,
-//   &::after {
-//     position: absolute;
-//     content: "";
-//     top: 2px;
-//     width: 12px;
-//     height: 12px;
-//     border-radius: 50%;
-//     background-color: #fff;
-
-//   }
-//   &::before {
-//     left: 0;
-//   }
-//   &::after {
-//     right: 0;
-//   }
-
-//   input[type="range"] {
-//     margin: auto;
-//     outline: none;
-//     padding: 0;
-//     height: 3px;
-//     width: calc(100% - 24px);
-//     margin-left: 12px;
-//     background-color: #6ce3eb;
-//     background-image: linear-gradient(#fff, #fff);
-//     background-repeat: no-repeat;
-//     cursor: pointer;
-//     -webkit-appearance: none;
-//   }
-//   input[type="range"]::-webkit-slider-runnable-track {
-//     box-shadow: none;
-//     border: none;
-//     background: transparent;
-//     -webkit-appearance: none;
-//   }
-//   input[type="range"]::-moz-range-track {
-//     box-shadow: none;
-//     border: none;
-//     background: transparent;
-//   }
-//   input[type="range"]::-moz-focus-outer {
-//     border: 0;
-//     background-color: #0076fe;
-//   }
-//   input[type="range"]::-webkit-slider-thumb {
-//     width: 40px;
-//     height: 40px;
-//     border: 0;
-//     // background: red;
-//     border-radius: 100%;
-//     -webkit-appearance: none;
-
-//     border: 0;
-//     border-radius: 50%;
-//     background-image: url(http://dev.caraworld.vn/assets/index/images/news/slider-dimond.png);
-//     background-size: contain;
-//     background-position: center center;
-//     background-repeat: no-repeat;
-//     cursor: pointer;
-//   }
-//   input[type="range"]::-moz-range-thumb {
-//     width: 16px;
-//     height: 16px;
-//     border: 0;
-//     background: greenyellow;
-//     border-radius: 100%;
-//     box-shadow: 0 1px 2px 0px #000;
-//   }
-// }
-// @media(max-width:767px){
-//   .slider-center-mode-range::before,.slider-center-mode-range::after{
-//     top: -3px;
-//   }
-// }
 
 
 
