@@ -12,9 +12,7 @@ function DynamicSlides() {
 
     AOS.init();
 
-
-    const [slideIndex, setSlideIndex] = useState(0);
-    const [updateCount, setUpdateCount] = useState(0);
+    const [styleBgs, setstyleBgs] = useState(0)
     const [sliderTargetValue, setSliderTargetValue] = useState({
         value: 0,
         min: 0,
@@ -42,7 +40,7 @@ function DynamicSlides() {
         centerPadding: '40px',
         infinite: true,
         autoplay: false,
-        afterChange: () => afterChangeSlider(),
+        afterChange: (current) => afterChangeSlider(current),
         beforeChange: (current, next) => beforeChangeSlider(next),
         responsive: [{
             breakpoint: 500,
@@ -53,13 +51,10 @@ function DynamicSlides() {
         }]
     };
 
-    const [styleBgs, setstyleBgs] = useState(0)
 
-    const afterChangeSlider = () => {
-        setUpdateCount(updateCount + 1)
+    const afterChangeSlider = (current) => {
     }
     const beforeChangeSlider = (next) => {
-        setSlideIndex(next)
         setSliderTargetValue({
             ...sliderTargetValue,
             value: next,
@@ -70,7 +65,7 @@ function DynamicSlides() {
         let targetValue = e.target.value;
         sliderRef.slickGoTo(targetValue)
 
-        let valueInput = {
+        const valueInput = {
             value: parseInt(targetValue),
             min: parseInt(e.target.min),
             max: parseInt(e.target.max),
@@ -81,13 +76,11 @@ function DynamicSlides() {
             ...valueInput,
         })
 
-    }
-
-    useEffect(() => {
-        const numberPercent = (sliderTargetValue.value - sliderTargetValue.min) * 100 / (sliderTargetValue.max - sliderTargetValue.min)
+        const numberPercent = (valueInput.value - valueInput.min) * 100 / (valueInput.max - valueInput.min)
         setstyleBgs(numberPercent + '% 100%')
 
-    }, [sliderTargetValue])
+    }
+
 
     const [isCheckedA, setIsCheckedA] = useState(true);
     const [isCheckedB, setIsCheckedB] = useState(true);
@@ -115,8 +108,6 @@ function DynamicSlides() {
             ...sliderTargetValue,
             value: 0
         })
-        setSlideIndex(0)
-
     };
 
     const handleCheckboxDChange = () => {
@@ -126,7 +117,6 @@ function DynamicSlides() {
             ...sliderTargetValue,
             value: 0
         })
-        setSlideIndex(0)
     };
 
     const ismobile = window.innerWidth < 768 ? 3 : 6
@@ -162,15 +152,6 @@ function DynamicSlides() {
     const displayedArrayAB = getDisplayedArrayAB();
     const displayedArrayCD = getDisplayedArrayCD();
 
-
-    const itemRef1 = useRef()
-    const itemRef2 = useRef()
-    const itemRef3 = useRef()
-    const itemRef4 = useRef()
-    const itemRef5 = useRef()
-    const itemRef6 = useRef()
-    const itemRef7 = useRef()
-
     useEffect(() => {
         const xarrayA = parseDataFromInput('#items1')
         const xarrayB = parseDataFromInput("#items2")
@@ -192,16 +173,16 @@ function DynamicSlides() {
         }
     }
 
-    const sliderCDIssue = ()=>{
-        let result='';
-        if(displayedArrayCD.length === 3 ){
+    const sliderCDIssue = () => {
+        let result = '';
+        if (displayedArrayCD.length === 3) {
             result = 'other-3'
-        }else if(displayedArrayCD.length == 2){
+        } else if (displayedArrayCD.length == 2) {
             result = 'other-2'
-        }else if(displayedArrayCD.length == 1){
+        } else if (displayedArrayCD.length == 1) {
             result = 'other-1'
-        }else{
-            result =''
+        } else {
+            result = ''
         }
 
         return result
@@ -377,15 +358,15 @@ function DynamicSlides() {
                             }
                             <div className={`slider-center-mode-range ${displayedArrayCD.length < 4 && 'hidden'}`}>
                                 {
-                                    displayedArrayCD.length > 3 ?
-                                        <input
-                                            onChange={e => sliderRangeChange(e)}
-                                            value={slideIndex}
-                                            type="range"
-                                            min={0}
-                                            max={displayedArrayCD.length - 1}
-                                            style={{ 'backgroundSize': styleBgs }}
-                                        /> : ''
+                                    displayedArrayCD.length > 3 &&
+                                    <input
+                                        onChange={e => sliderRangeChange(e)}
+                                        value={sliderTargetValue.value}
+                                        type="range"
+                                        min={0}
+                                        max={displayedArrayCD.length - 1}
+                                        style={{ 'backgroundSize': styleBgs }}
+                                    />
                                 }
                             </div>
                         </div>
