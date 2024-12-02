@@ -342,7 +342,7 @@ function DynamicSlides() {
                                     <i className="checkbox-icon" />
                                 </span>
                             </span>
-                            <span className="checkbox-text">TIN DỰ ÁN</span>
+                            <span className="checkbox-text">Hình Sự Kiện</span>
                         </label>
                         <label className="checkbox-label" htmlFor="checkbox-4">
                             <span>
@@ -351,7 +351,7 @@ function DynamicSlides() {
                                     <i className="checkbox-icon" />
                                 </span>
                             </span>
-                            <span className="checkbox-text">TIN BÁO CHÍ</span>
+                            <span className="checkbox-text">Hình tiến độ</span>
                         </label>
                     </div>
                 </div>
