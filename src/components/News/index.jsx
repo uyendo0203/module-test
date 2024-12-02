@@ -12,14 +12,6 @@ function DynamicSlides() {
 
     AOS.init();
 
-    const [styleBgs, setstyleBgs] = useState(0)
-    const [sliderTargetValue, setSliderTargetValue] = useState({
-        value: 0,
-        min: 0,
-        max: 0
-    });
-    let sliderRef = useRef(null);
-
     const settings = {
         dots: true,
         arrows: false,
@@ -42,6 +34,7 @@ function DynamicSlides() {
         autoplay: false,
         afterChange: (current) => afterChangeSlider(current),
         beforeChange: (current, next) => beforeChangeSlider(next),
+        onInit: () => oninitSlider(),
         responsive: [{
             breakpoint: 500,
             settings: {
@@ -52,13 +45,37 @@ function DynamicSlides() {
     };
 
 
+    const [styleBgs, setstyleBgs] = useState(0)
+    const [sliderTargetValue, setSliderTargetValue] = useState({
+        value: 0,
+        min: 0,
+        max: 0
+    });
+    let sliderRef = useRef(null);
+
+    const [isCheckedA, setIsCheckedA] = useState(true);
+    const [isCheckedB, setIsCheckedB] = useState(true);
+    const [isCheckedC, setIsCheckedC] = useState(true);
+    const [isCheckedD, setIsCheckedD] = useState(true);
+
+    const [arrA, setArrA] = useState([]);
+    const [arrB, setArrB] = useState([]);
+    const [arrC, setArrC] = useState([]);
+    const [arrD, setArrD] = useState([]);
+
+    const ismobile = window.innerWidth < 768 ? 3 : 6
+
     const afterChangeSlider = (current) => {
     }
+   
     const beforeChangeSlider = (next) => {
         setSliderTargetValue({
             ...sliderTargetValue,
             value: next,
         })
+
+        const numberPercent = (next - sliderTargetValue.min) * 100 / (sliderTargetValue.max - sliderTargetValue.min)
+        setstyleBgs(numberPercent + '% 100%')
     }
 
     const sliderRangeChange = (e) => {
@@ -80,18 +97,6 @@ function DynamicSlides() {
         setstyleBgs(numberPercent + '% 100%')
 
     }
-
-
-    const [isCheckedA, setIsCheckedA] = useState(true);
-    const [isCheckedB, setIsCheckedB] = useState(true);
-    const [isCheckedC, setIsCheckedC] = useState(true);
-    const [isCheckedD, setIsCheckedD] = useState(true);
-
-    const [arrA, setArrA] = useState([]);
-    const [arrB, setArrB] = useState([]);
-    const [arrC, setArrC] = useState([]);
-    const [arrD, setArrD] = useState([]);
-
 
     const handleCheckboxAChange = () => {
         setIsCheckedA(!isCheckedA);
@@ -118,8 +123,6 @@ function DynamicSlides() {
             value: 0
         })
     };
-
-    const ismobile = window.innerWidth < 768 ? 3 : 6
 
     const chunk = (arr, size) =>
         Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
@@ -151,6 +154,13 @@ function DynamicSlides() {
 
     const displayedArrayAB = getDisplayedArrayAB();
     const displayedArrayCD = getDisplayedArrayCD();
+
+    const oninitSlider = () => {
+        setSliderTargetValue({
+            ...sliderTargetValue,
+            max:displayedArrayCD.length
+        })
+    }
 
     useEffect(() => {
         const xarrayA = parseDataFromInput('#items1')
