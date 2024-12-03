@@ -5,11 +5,11 @@ const EventItem = ({ name, link, image, date }) => {
                 <img src={process.env.NODE_ENV === 'development' ? ('http://dev.caraworld.vn/' + image) : image} alt="slider-su-kien" />
             </div>
             <div className="events-des">
-                <h3 className="events-title">{name} <b>{process.env.NODE_ENV}</b></h3>
+                <h3 className="events-title">{name}</h3>
                 <div className="events-arrow-date">
                     <a target="_blank" href={link ? link : '/'} className="events-arrow">
                         <span className="arrow">
-                            <img src={process.env.NODE_ENV === 'development' ? "http://dev.caraworld.vn/assets/index/images/news/arrow-readmore.svg" : "./images/news/arrow-readmore.svg"} alt="arrow-readmore" />
+                            <img src={process.env.NODE_ENV === 'development' ? "http://dev.caraworld.vn/assets/index/images/news/arrow-readmore.svg" : "/assets/index/images/news/arrow-readmore.svg"} alt="arrow-readmore" />
                         </span>
                         <span> Xem thêm</span>
                     </a>
